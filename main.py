@@ -7,6 +7,7 @@ from utils.write_to_json import write_to_json
 from preprocessing.tokenizer import tokenizer
 from preprocessing.remove_stopwords import remove_stopwords
 from preprocessing.lemmatizer import lemmatizer
+from understanding_context.ner import ner
 
 def get_article_text(link):
     config = Config()
@@ -52,22 +53,40 @@ def open_json(json_path):
 def preprocess(datasets):
     print("Prétraitement des données")
 
-    # Check if datasets has any elements
+    preprocessed_datasets = []
+
     if datasets:
         for dataset in datasets:
             dataset_tokenizer = tokenizer(dataset)
             dataset_stopword = remove_stopwords(dataset_tokenizer)
             dataset_lemmatizer = lemmatizer(dataset_stopword)
+            preprocessed_datasets.append(dataset_lemmatizer)
 
     else:
         print("No dataset available for tokenization.")
+        return None
+
+    return preprocessed_datasets
 
 
-def analysis_and_processing():
+def analysis_and_processing(preprocessed_datasets):
     print("Analyse et traitement du contenu")
-    # KO - Extraction d'entités nommées (NER)
-    # KO - Résumé de texte
 
+    analysised_datasets = []
+
+    if preprocessed_datasets:
+        for dataset in preprocessed_datasets:
+            # OK - Extraction d'entités nommées (NER)
+            dataset_ner = ner(dataset)
+            # KO - Résumé de texte
+            # dataset_summarized = summarize(dataset_ner)
+            analysised_datasets.append(dataset_ner)
+
+    else:
+        print("No dataset available for tokenization.")
+        return None
+
+    return analysised_datasets
 
 def main():
     print("Article AI")
@@ -78,7 +97,10 @@ def main():
     datasets = []
     datasets.append(open_json("jsons/dataset/dataset_1.json"))
 
-    preprocess(datasets)
+    preprocessed_datasets = preprocess(datasets)
+    datasets = analysis_and_processing(preprocessed_datasets)
+
+
 
     print("Les articles ont été récupérés")
 
