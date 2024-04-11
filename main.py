@@ -1,10 +1,12 @@
+import json
 from newspaper import Article, Config
 from get_google_news_data import get_google_news_data
 from get_google_scholar_data import get_google_scholar_data
 from get_google_search_data import get_google_search_data
 from utils.write_to_json import write_to_json
 from preprocessing.tokenizer import tokenizer
-import json
+from preprocessing.remove_stopwords import remove_stopwords
+from preprocessing.lemmatizer import lemmatizer
 
 def get_article_text(link):
     config = Config()
@@ -47,30 +49,25 @@ def open_json(json_path):
         print(f"Error opening JSON file: {e}")
         return None
 
-def preprocess(datasets=None):
+def preprocess(datasets):
     print("Prétraitement des données")
-
-    if datasets is None:
-        print("Aucun dataset fourni (normal si c'est pour debug ou test)")
-        datasets = []
-        datasets.append(open_json("jsons/dataset/dataset_1.json"))  # Append the loaded dataset
-    elif not datasets:  # Check if datasets is an empty list
-        print("Empty list provided for datasets.")
 
     # Check if datasets has any elements
     if datasets:
-        # KO - Tokenization
-        tokenizer(datasets[0])
+        for dataset in datasets:
+            dataset_tokenizer = tokenizer(dataset)
+            dataset_stopword = remove_stopwords(dataset_tokenizer)
+            dataset_lemmatizer = lemmatizer(dataset_stopword)
+
     else:
         print("No dataset available for tokenization.")
 
-    # KO - Suppression des stopwords
-    # KO - Lemmatisation
 
 def analysis_and_processing():
     print("Analyse et traitement du contenu")
     # KO - Extraction d'entités nommées (NER)
     # KO - Résumé de texte
+
 
 def main():
     print("Article AI")
@@ -78,7 +75,10 @@ def main():
     # query = input("Entrez votre recherche: ")
     # datasets = get_datasets(query)
 
-    preprocess()
+    datasets = []
+    datasets.append(open_json("jsons/dataset/dataset_1.json"))
+
+    preprocess(datasets)
 
     print("Les articles ont été récupérés")
 
