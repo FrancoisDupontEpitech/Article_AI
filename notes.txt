@@ -1,0 +1,25 @@
+1. Collecte des données
+    OK - récupérer 10 articles Google News
+    KO - récupérer 10 articles Google Scholar
+    OK - récupérer 10 articles Google Search
+
+2. Prétraitement des données
+    OK - Nettoyage des données : (Supprimez les balises HTML)
+    OK - Tokenization
+    KO - Suppression des stopwords
+    KO - Lemmatisation
+
+3. Analyse et traitement du contenu
+        ecarté KO - Analyse de sentiments
+    KO - Extraction d'entités nommées (NER)
+    KO - Résumé de texte
+        ecarté KO - Analyse thématique (LDA)
+
+4. Génération de l'article
+    KO - Assemblage de contenu
+    KO - Fine-tuning d'un modèle GPT
+    KO - Neutralité et vérification des faits
+
+5. Publication et itération
+    KO - Rétroaction utilisateur
+    KO - Amélioration continue
